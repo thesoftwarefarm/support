@@ -12,7 +12,7 @@ class FromJsonTest extends TestCase
 
         $decoded = from_json($json);
 
-        $this->assertIsObject($decoded);
+        $this->assertTrue(is_object($decoded));
         $this->assertEquals('value', $decoded->prop);
     }
 
@@ -20,7 +20,7 @@ class FromJsonTest extends TestCase
     {
         $decoded = from_json(null, ['a' => 'b']);
 
-        $this->assertIsArray($decoded);
+        $this->assertTrue(is_array($decoded));
         $this->assertEquals('b', $decoded['a']);
     }
 
@@ -30,7 +30,7 @@ class FromJsonTest extends TestCase
 
         $decoded = from_json($json, [], $return_as_array = true);
 
-        $this->assertIsArray($decoded);
+        $this->assertTrue(is_array($decoded));
         $this->assertEquals('value', $decoded['prop']);
     }
 }
