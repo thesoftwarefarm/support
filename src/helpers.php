@@ -35,3 +35,48 @@ if (!function_exists('carbon_mysql_now')) {
         return Carbon::parse($result['now']);
     }
 }
+
+if(!function_exists('extract_date_range')) {
+    /**
+     * Accepted string formats are:
+     * "Y-m-d"
+     * "Y-m-d to Y-m-d"
+     * "Y-m-d H:i to Y-m-d H:i"
+     *
+     * @param string $string
+     * @return object|null
+     */
+    function extract_date_range($string = "")
+    {
+        if(empty($string))
+            return null;
+
+        if(preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $string, $matches))
+        {
+            $date = Carbon::parse($matches[0]);
+
+            return (object)[
+                'start_date' => $date->copy()->startOfDay(),
+                'end_date' => $date->copy()->endOfDay(),
+            ];
+        }
+
+        if(preg_match('/^([0-9]{4}-[0-9]{2}-[0-9]{2})\sto\s([0-9]{4}-[0-9]{2}-[0-9]{2})$/', $string, $matches))
+        {
+            return (object)[
+                'start_date' => Carbon::parse($matches[1])->startOfDay(),
+                'end_date' => Carbon::parse($matches[2])->endOfDay(),
+            ];
+        }
+
+        if(preg_match('/^([0-9]{4}-[0-9]{2}-[0-9]{2}\s[0-9]{2}:[0-9]{2})\sto\s([0-9]{4}-[0-9]{2}-[0-9]{2}\s[0-9]{2}:[0-9]{2})$/', $string, $matches))
+        {
+            return (object)[
+                'start_date' => Carbon::parse($matches[1]),
+                'end_date' => Carbon::parse($matches[2]),
+            ];
+        }
+
+        return null;
+    }
+}
