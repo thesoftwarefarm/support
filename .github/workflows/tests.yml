@@ -44,9 +44,9 @@ jobs:
 
       - name: Setup database
         run: |
-          sudo /etc/init.d/mysql start
-          mysql -u root -proot -e "CREATE USER 'ubuntu'@'%' IDENTIFIED BY 'vagrant'"
-          mysql -u root -proot -e "GRANT ALL ON *.* TO 'ubuntu'@'%';"
+          mysql -h 127.0.0.1 -u root -proot -e "CREATE USER 'ubuntu'@'%' IDENTIFIED BY 'vagrant'"
+          mysql -h 127.0.0.1 -u root -proot -e "GRANT ALL ON *.* TO 'ubuntu'@'%' WITH GRANT OPTION;"
+          mysql -h 127.0.0.1 -u root -proot -e "SELECT VERSION();"
 
       - name: Execute tests
         run: vendor/bin/phpunit
